@@ -31,6 +31,11 @@ if (Console.IsInputRedirected)
     redirectedInput = Console.In.ReadToEnd();
 }
 
+if (textSources.Count == 0 && string.IsNullOrEmpty(redirectedInput))
+{
+    ConsoleHelper.ShowScrollableHelp();
+}
+
 if (!string.IsNullOrEmpty(redirectedInput))
 {
     Console.WriteLine($"{CounterService.GetCounterOutput(redirectedInput, options)}");

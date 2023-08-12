@@ -39,7 +39,8 @@ public static class CounterService
     {
         const string lineEndingsPattern = "\r\n|\n|\r";
         var matches = Regex.Matches(text, lineEndingsPattern);
-        return matches.Count;
+        var lineCount = !text.EndsWith("\n") ? matches.Count + 1 : matches.Count;
+        return lineCount;
     }
 
     private static int CountBytes(string text)
