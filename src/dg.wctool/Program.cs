@@ -28,7 +28,7 @@ foreach (var textSource in textSources)
     try
     {
         var text = FileService.GetTextFromFile(textSource);
-        Console.WriteLine($"{CounterService.GetCounterOutput(text, options)}\t{textSource}");
+        Console.WriteLine($"{CounterService.GetCounterOutput(text, options)} {textSource}");
     }
     catch (FileNotFoundException)
     {
