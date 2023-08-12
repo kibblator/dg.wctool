@@ -1,7 +1,16 @@
 ﻿namespace dg.wctool.Helpers;
 
-public class ConsoleHelper
+public static class ConsoleHelper
 {
+    public static void DisplayCounterOutput(IList<int> values, string outputSuffix = "")
+    {
+        var formatting = string.Join("", values.Select((v, i) => "{" + i + ",-10}"));
+        var output = string.Format(formatting, values.Select(v => v.ToString()).ToArray());
+
+        var suffixOffset = -10 * values.Count;
+        Console.WriteLine(string.Format("{0}{1," + suffixOffset + "}", output, outputSuffix).Trim());
+    }
+    
     public static void ShowScrollableHelp()
     {
         var helpContent = GenerateHelpContent();

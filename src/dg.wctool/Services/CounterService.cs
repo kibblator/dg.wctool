@@ -6,33 +6,33 @@ namespace dg.wctool.Services;
 
 public static class CounterService
 {
-    public static string GetCounterOutput(string text, Dictionary<Command, bool> options)
+    public static Dictionary<Command, int> GetValuesForOptions(Dictionary<Command, bool> options, string text)
     {
-        var output = "";
+        var commandValues = new Dictionary<Command, int>();
         var enabledOptions = options.Where(o => o.Value).Select(o => o.Key).ToList();
         if (!enabledOptions.Any())
-            enabledOptions = options.Where(o => o.Key != Command.CountCharacters).Select(o => o.Key).ToList();
-        
+            enabledOptions = GetDefaultOptions(options);
+
         foreach (var option in enabledOptions)
         {
             switch (option)
             {
                 case Command.CountLines:
-                    output += $" {CountLines(text)}";
+                    commandValues.Add(Command.CountLines, CountLines(text));
                     break;
                 case Command.CountWords:
-                    output += $" {CountWords(text)}";
+                    commandValues.Add(Command.CountWords, CountWords(text));
                     break;
                 case Command.CountBytes:
-                    output += $" {CountBytes(text)}";
+                    commandValues.Add(Command.CountBytes, CountBytes(text));
                     break;
                 case Command.CountCharacters:
-                    output += $" {CountCharacters(text)}";
+                    commandValues.Add(Command.CountCharacters, CountCharacters(text));
                     break;
             }
         }
 
-        return output.Trim();
+        return commandValues;
     }
 
     private static int CountLines(string text)
@@ -55,9 +55,15 @@ public static class CounterService
         var matches = Regex.Matches(text, wordPattern);
         return matches.Count;
     }
-    
+
     private static int CountCharacters(string text)
     {
         return text.Length;
+    }
+
+
+    private static List<Command> GetDefaultOptions(Dictionary<Command, bool> options)
+    {
+        return options.Where(o => o.Key != Command.CountCharacters).Select(o => o.Key).ToList();
     }
 }

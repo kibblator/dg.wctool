@@ -38,20 +38,33 @@ if (textSources.Count == 0 && string.IsNullOrEmpty(redirectedInput))
 
 if (!string.IsNullOrEmpty(redirectedInput))
 {
-    Console.WriteLine($"{CounterService.GetCounterOutput(redirectedInput, options)}");
+    var optionValues = CounterService.GetValuesForOptions(options, redirectedInput);
+    ConsoleHelper.DisplayCounterOutput(optionValues.Select(ov => ov.Value).ToList());
 }
 else
 {
+    var commandTotals = new Dictionary<Command, int>();
     foreach (var textSource in textSources)
     {
         try
         {
             var text = FileService.GetTextFromFile(textSource);
-            Console.WriteLine($"{CounterService.GetCounterOutput(text, options)} {textSource}");
+            var optionValues = CounterService.GetValuesForOptions(options, text);
+            foreach (var optionValue in optionValues)
+            {
+                commandTotals.TryAdd(optionValue.Key, 0);
+                commandTotals[optionValue.Key] += optionValue.Value;
+            }
+            ConsoleHelper.DisplayCounterOutput(optionValues.Select(ov => ov.Value).ToList(), textSource);
         }
         catch (FileNotFoundException)
         {
             Console.WriteLine($"ccwc: {textSource}: No such file or directory");
         }
+    }
+
+    if (textSources.Count > 1)
+    {
+        ConsoleHelper.DisplayCounterOutput(commandTotals.Select(ov => ov.Value).ToList(), "total");
     }
 }
