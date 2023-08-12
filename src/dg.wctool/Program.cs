@@ -12,6 +12,7 @@ var options = new Dictionary<Command, bool>
 };
 
 var textSources = new List<string>();
+var redirectedInput = "";
 
 foreach (var arg in args)
 {
@@ -25,15 +26,27 @@ foreach (var arg in args)
     }
 }
 
-foreach (var textSource in textSources)
+if (Console.IsInputRedirected)
 {
-    try
+    redirectedInput = Console.In.ReadToEnd();
+}
+
+if (!string.IsNullOrEmpty(redirectedInput))
+{
+    Console.WriteLine($"{CounterService.GetCounterOutput(redirectedInput, options)}");
+}
+else
+{
+    foreach (var textSource in textSources)
     {
-        var text = FileService.GetTextFromFile(textSource);
-        Console.WriteLine($"{CounterService.GetCounterOutput(text, options)} {textSource}");
-    }
-    catch (FileNotFoundException)
-    {
-        Console.WriteLine($"ccwc: {textSource}: No such file or directory");
+        try
+        {
+            var text = FileService.GetTextFromFile(textSource);
+            Console.WriteLine($"{CounterService.GetCounterOutput(text, options)} {textSource}");
+        }
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine($"ccwc: {textSource}: No such file or directory");
+        }
     }
 }
