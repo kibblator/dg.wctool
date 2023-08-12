@@ -4,8 +4,11 @@ using dg.wctool.Services;
 
 var options = new Dictionary<Command, bool>
 {
+    
+    { Command.CountLines , false},
+    { Command.CountWords, false },
     { Command.CountBytes, false },
-    { Command.CountLines , false}
+    { Command.CountCharacters, false}
 };
 
 var textSources = new List<string>();

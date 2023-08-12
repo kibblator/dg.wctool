@@ -22,6 +22,12 @@ public static class CommandHelper
                 case 'l':
                     options[Command.CountLines] = true;
                     break;
+                case 'w':
+                    options[Command.CountWords] = true;
+                    break;
+                case 'm':
+                    options[Command.CountCharacters] = true;
+                    break;
             }
         }
     }

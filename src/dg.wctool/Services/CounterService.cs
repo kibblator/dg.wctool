@@ -11,19 +11,23 @@ public static class CounterService
         var output = "";
         var enabledOptions = options.Where(o => o.Value).Select(o => o.Key).ToList();
         if (!enabledOptions.Any())
-            enabledOptions = options.Select(o => o.Key).ToList();
+            enabledOptions = options.Where(o => o.Key != Command.CountCharacters).Select(o => o.Key).ToList();
         
         foreach (var option in enabledOptions)
         {
             switch (option)
             {
-                case Command.CountBytes:
-                    output += $" {CountBytes(text)}";
-                    break;
                 case Command.CountLines:
                     output += $" {CountLines(text)}";
                     break;
-                default:
+                case Command.CountWords:
+                    output += $" {CountWords(text)}";
+                    break;
+                case Command.CountBytes:
+                    output += $" {CountBytes(text)}";
+                    break;
+                case Command.CountCharacters:
+                    output += $" {CountCharacters(text)}";
                     break;
             }
         }
@@ -33,8 +37,8 @@ public static class CounterService
 
     private static int CountLines(string text)
     {
-        const string pattern = "\r\n|\n|\r";
-        var matches = Regex.Matches(text, pattern);
+        const string lineEndingsPattern = "\r\n|\n|\r";
+        var matches = Regex.Matches(text, lineEndingsPattern);
         return matches.Count;
     }
 
@@ -42,5 +46,17 @@ public static class CounterService
     {
         var bytes = Encoding.UTF8.GetBytes(text);
         return bytes.Length;
+    }
+
+    private static int CountWords(string text)
+    {
+        const string wordPattern = @"\S+";
+        var matches = Regex.Matches(text, wordPattern);
+        return matches.Count;
+    }
+    
+    private static int CountCharacters(string text)
+    {
+        return text.Length;
     }
 }
