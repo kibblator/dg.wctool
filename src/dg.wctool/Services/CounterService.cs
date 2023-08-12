@@ -32,7 +32,7 @@ public static class CounterService
 
     private static int CountLines(string text)
     {
-        var lines = text.Split(Environment.NewLine).Length;
+        var lines = text.Split(new [] {"\n"}, StringSplitOptions.RemoveEmptyEntries).Length;
         return lines;
     }
 
