@@ -4,9 +4,8 @@ using dg.wctool.Services;
 
 var options = new Dictionary<Command, bool>
 {
-    {
-        Command.CountBytes, false
-    }
+    { Command.CountBytes, false },
+    { Command.CountLines , false}
 };
 
 var textSources = new List<string>();

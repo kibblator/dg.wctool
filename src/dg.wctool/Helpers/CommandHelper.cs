@@ -17,8 +17,10 @@ public static class CommandHelper
             switch (command)
             {
                 case 'c':
-                default:
                     options[Command.CountBytes] = true;
+                    break;
+                case 'l':
+                    options[Command.CountLines] = true;
                     break;
             }
         }

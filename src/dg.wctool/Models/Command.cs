@@ -2,5 +2,6 @@
 
 public enum Command
 {
-    CountBytes = 1
+    CountBytes = 1,
+    CountLines = 2
 }
