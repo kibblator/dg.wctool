@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 using dg.wctool.Models;
 
 namespace dg.wctool.Services;
@@ -32,8 +33,9 @@ public static class CounterService
 
     private static int CountLines(string text)
     {
-        var lines = text.Split(new [] {"\n"}, StringSplitOptions.RemoveEmptyEntries).Length;
-        return lines;
+        const string pattern = "\r\n|\n|\r";
+        var matches = Regex.Matches(text, pattern);
+        return matches.Count;
     }
 
     private static int CountBytes(string text)
